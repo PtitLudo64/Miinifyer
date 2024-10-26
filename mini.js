@@ -7,7 +7,12 @@ let comEnd = ' ';
 
 async function minify(dir, base, ext) {
   // const cr = /[\s]/g;
-  const reg = / {/;
+  const openBrace = /\s*{\s*/;
+  const equal = /\s*=\s*/;
+  const twoDots = /\s*:\s*/;
+  const plus = /\s*\+\s*/;
+  const comma = /\s*,\s*/g;
+  // const plus2 = /\+ /;
 
   try {
     const data = await fs.readFile(`${dir}/${base}${ext}`, { encoding: "utf8" });
@@ -38,7 +43,11 @@ async function minify(dir, base, ext) {
           txt = txt.substring(end + 3, txt.length);
           isCom = false;
         }
-        txt = txt.replace(reg, '{')
+        txt = txt.replace(openBrace, '{');
+        txt = txt.replace(twoDots, ':');
+        txt = txt.replace(equal, '=');
+        txt = txt.replace(plus, '+');
+        txt = txt.replace(comma, ',');
         str+= txt.trim();
       });
       // const noCr = data.replace(cr, "");
