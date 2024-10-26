@@ -1,5 +1,5 @@
 // Stock la div #com dans la constante commentaire
-const commentaire = document.querySelector("#com");
+const timer = document.querySelector("#com");
 
 let separateur = " ";
 
@@ -13,7 +13,7 @@ setInterval(() => {
     date.getSeconds() % 2 == 0
       ? " "
       : '<span class="flash" style="color:var(--txt-accent-color)">:</span>';
-  commentaire.innerHTML =
+  timer.innerHTML =
     date
       .getHours()
       .toLocaleString("fr-FR", {
@@ -32,3 +32,8 @@ setInterval(() => {
       .getSeconds()
       .toLocaleString("fr-FR", { minimumIntegerDigits: 2, useGrouping: false });
 }, 1000);
+
+// Plusieurs lignes de commentaires
+// à la suite pour le test de 
+// minification
+
