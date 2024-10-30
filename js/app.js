@@ -1,5 +1,6 @@
 // Stock la div #com dans la constante commentaire
 const timer = document.querySelector("#com");
+const bidon = 'Truc';
 
 let separateur = " ";
 
