@@ -1,6 +1,8 @@
 // Stock la div #com dans la constante commentaire
 const timer = document.querySelector("#com");
-const bidon = 'Truc';
+const allTitles = document.querySelectorAll('.title');
+const titlesArr = [];
+allTitles.forEach(t => {titlesArr.push(t.innerText)});
 
 let separateur = " ";
 
@@ -10,6 +12,12 @@ let date = new Date();
 // Injection de l'heure, minutes et secondes dans le DOM
 setInterval(() => {
   date = new Date();
+  if (date.getSeconds() % 10 == 0) {
+    let temp = titlesArr[0];
+    titlesArr.shift();
+    titlesArr.push(temp);
+    allTitles.forEach((t, i) => {t.innerText = titlesArr[i]});
+  }
   separateur =
     date.getSeconds() % 2 == 0
       ? " "

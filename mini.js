@@ -53,6 +53,8 @@ async function minify(dir, base, ext) {
     {regex: /\s*:\s*/, replacement: ':'},
     {regex: /\s*\+\s*/g, replacement: '+'},
     {regex: /\s*,\s*/g, replacement: ','},
+    {regex: /\s*%\s*/g, replacement: '%'},
+    {regex: /\s*\?\s*/g, replacement: '?'},
   ];
 
   try {
@@ -68,11 +70,17 @@ async function minify(dir, base, ext) {
       let isCom = false;
       let start, end;
       txtArr.forEach(txt => {
+        txt = txt.trim();
         let isConstant = txt.search(/const /);
         let isLet = txt.search(/let /);
-        if (isConstant>-1 || isLet> -1) {
-          isConstant > -1 ? select = 6 : select = 4;
-          const myVar = txt.substring(select, txt.indexOf('='));
+        if (ext === '.js' && (isConstant>-1 || isLet> -1)) {
+          if (isConstant > -1) 
+            select = isConstant + 6;
+          else {
+            select = isLet + 4;
+          }
+          // isConstant > -1 ? select = 6 : select = 4;
+          const myVar = txt.substring(select, txt.indexOf('=', select));
           setLabelName(myVar);
         }
         start = txt.indexOf(comStart);
