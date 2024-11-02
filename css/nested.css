@@ -10,6 +10,9 @@
     --txt-primary-color: #f1f1f1;
     --txt-secondary-color: #bbb;
     --txt-accent-color: #f50;
+    --hue: 0;
+    --sat: 70;
+    --ligthness: 70;
 }
 
 /* Début du CSS
@@ -31,17 +34,18 @@ body {
     .container {
         width: 90%;
         max-width: 900px;
-        margin-top: 1rem;
+        margin-top: 2rem;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         grid-gap: 20px;
         .card {
+            --card-border-color: hsl(var(--hue) calc(var(--sat) * 1%) calc(var(--ligthness) * 1%));
             display: flex;
             flex-direction: column;
             width: 280px;
             padding: 0.5rem;
-            box-shadow: 0px 0px 5px 5px var(--txt-secondary-color),
-                        0 0 10px 10px var(--txt-secondary-color);
+            box-shadow: 0px 0px 5px 5px var(--card-border-color),
+                        0 0 10px 10px var(--card-border-color);
             
             .title {
                 color: var(--txt-primary-color);

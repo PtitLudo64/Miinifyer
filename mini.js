@@ -57,6 +57,10 @@ async function minify(dir, base, ext) {
     {regex: /\s*\?\s*/g, replacement: '?'},
   ];
 
+  const variablesArray = [
+    'const', 'let'
+  ];
+
   try {
     let data = await fs.readFile(`${dir}/${base}${ext}`, { encoding: "utf8" });
     if (data) {
@@ -70,18 +74,16 @@ async function minify(dir, base, ext) {
       let isCom = false;
       let start, end;
       txtArr.forEach(txt => {
-        txt = txt.trim();
-        let isConstant = txt.search(/const /);
-        let isLet = txt.search(/let /);
-        if (ext === '.js' && (isConstant>-1 || isLet> -1)) {
-          if (isConstant > -1) 
-            select = isConstant + 6;
-          else {
-            select = isLet + 4;
-          }
-          // isConstant > -1 ? select = 6 : select = 4;
-          const myVar = txt.substring(select, txt.indexOf('=', select));
-          setLabelName(myVar);
+        if (ext === '.js') {
+          variablesArray.forEach(v => {
+            let isVar = txt.search(v+' ');
+            if (isVar > -1) {
+              let select = isVar + v.length + 1;
+              const myVar = txt.substring(select, txt.indexOf('=', select));
+              if (myVar.length > 2)
+                setLabelName(myVar);
+            }
+          });
         }
         start = txt.indexOf(comStart);
         comEnd != '' ? end = txt.indexOf(comEnd) : end = 0;
@@ -108,8 +110,10 @@ async function minify(dir, base, ext) {
         txt = txt.replace(/\s*:\s*/, ':');
 
         correspondenceArray.forEach( elt => {
+          let globalElt = new RegExp(`(?<!-)${elt.name}\\b`, 'g');
+
           if (txt.indexOf(elt.name) > -1) {
-            txt = txt.replace(elt.name, elt.label);
+            txt = txt.replace(globalElt, elt.label);
           }
         });
 

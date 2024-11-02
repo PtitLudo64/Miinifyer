@@ -1,9 +1,11 @@
 // Stock la div #com dans la constante commentaire
 const timer = document.querySelector("#com");
 const allTitles = document.querySelectorAll('.title');
+const root = document.documentElement;
 const titlesArr = [];
 allTitles.forEach(t => {titlesArr.push(t.innerText)});
 
+let hue = 0;
 let separateur = " ";
 
 // Créé une constante date et y stock l'objet Date
@@ -11,6 +13,8 @@ let date = new Date();
 
 // Injection de l'heure, minutes et secondes dans le DOM
 setInterval(() => {
+  hue < 360 ? hue+=2 : hue=0;
+  root.style.setProperty('--hue', hue); // Ne pas remplacer --hue!
   date = new Date();
   if (date.getSeconds() % 10 == 0) {
     let temp = titlesArr[0];
